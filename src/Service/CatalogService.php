@@ -28,7 +28,7 @@ final class CatalogService {
   try{
    $header=fgetcsv($handle,null,';','"','');
    if(!is_array($header))return [];
-   $header[0]=preg_replace('/^\\xEF\\xBB\\xBF/','',(string)$header[0]);
+   $header[0]=preg_replace('/^\xEF\xBB\xBF/','',(string)$header[0]);
    $rows=[];
    while(($row=fgetcsv($handle,null,';','"',''))!==false){
     if(count($row)===count($header))$rows[]=array_combine($header,$row);
