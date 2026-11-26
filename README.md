@@ -1,18 +1,26 @@
-# Практическая работа №05 — ООП и каталог
+# Практическая работа №05 — PHP ООП и каталог
 
 **Студент:** Солопов Антон  
-**Группа:** ЭПБО-01-25
+**Группа:** ЭПБО-01-25  
+**Дисциплина:** Технологии разработки программного обеспечения
 
-## Реализовано
-Классы Product и Category с конструкторами и методами чтения; CatalogRepository преобразует исходные JSON в объекты; CatalogService выполняет фильтрацию по названию, категории, диапазону цен и активности. Интерфейс не работает с JSON напрямую.
+## Результат
+Приложение загружает products.json и categories.json в объекты Product и Category. CatalogService фильтрует товары по названию, категории, диапазону цен и активности, вычисляет число активных товаров и среднюю цену. class_requirements.csv читается репозиторием и отображается в интерфейсе. Модели не содержат HTML.
+
+Product реализует методы предметной области: проверка категории, попадание в диапазон цены, поиск по названию и форматирование цены. Конструкторы отклоняют некорректные значения через InvalidArgumentException.
 
 ## Запуск
-PHP 8.1+ и mbstring: `php -S localhost:8000 -t public`, затем http://localhost:8000.
+PHP 8.1+. Дополнительные расширения и библиотеки не нужны.
+php -S localhost:8000 -t public
+Откройте http://localhost:8000.
 
-## Проверка
-`php -d zend.assertions=1 -d assert.exception=1 tests/catalog_test.php`
+## Тесты
+php -d zend.assertions=1 -d assert.exception=1 tests/catalog_test.php
+Проверяются 12 товаров, 3 категории, 6 требований из CSV, фильтры и ошибки конструкторов.
 
-## Структура
-`src/` — модели, репозиторий и сервис; `public/index.php` — HTTP и представление; `dataset/` — предоставленные исходные данные; `tests/` — тест сервиса.
+## Поток данных
+products.json + categories.json + class_requirements.csv → CatalogRepository → объекты Product и Category → CatalogService → index.php → HTML-карточки.
 
-Обязательные свойства Product и Category соответствуют `dataset/class_requirements.csv`. Поле `active` дополнительно присутствует в исходном products.json и используется для фильтрации.
+src/Model — модели; src/Service/CatalogRepository.php — чтение файлов; src/Service/CatalogService.php — фильтрация и агрегаты; public/index.php — HTTP и HTML; dataset — исходные данные; tests — проверки.
+
+require_once предотвращает повторное подключение. При росте проекта ручное подключение классов обычно заменяют автозагрузчиком Composer по PSR-4.
