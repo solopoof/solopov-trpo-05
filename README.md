@@ -5,10 +5,10 @@
 **Дисциплина:** Технологии разработки программного обеспечения
 
 ## Результат
-Приложение формирует каталог из объектов Product и Category на основе products.json и categories.json. Product содержит свойства id, name, price и categoryId согласно class_requirements.csv. CatalogService фильтрует каталог по категории и вычисляет среднюю цену. HTML-карточки формируются отдельно от моделей.
+Приложение формирует каталог из объектов Product и Category на основе products.json и categories.json. Свойства Product и Category соответствуют class_requirements.csv. CatalogService загружает исходные файлы, создаёт объекты, фильтрует каталог по категории и вычисляет среднюю цену. Карточки HTML формируются отдельно от моделей.
 
 ## Запуск
-PHP 8.1+. Дополнительные расширения и библиотеки не требуются.
+Требуется PHP 8.1 или новее. Дополнительные расширения и библиотеки не нужны.
 
 ```bash
 php -S localhost:8000 -t public
@@ -18,15 +18,17 @@ php -S localhost:8000 -t public
 
 ## Проверка
 ```bash
-php -d zend.assertions=1 -d assert.exception=1 tests/catalog_test.php
+php tests/catalog_test.php
 ```
 
-Проверяются загрузка товаров и категорий, фильтрация по категории, средняя цена и проверка конструкторов.
+Проверяются загрузка данных, фильтрация по категории, средняя цена, методы Product и проверки конструкторов.
 
 ## Структура
-src/Model/ — классы Product и Category.  
-src/Service/CatalogRepository.php — загрузка исходных файлов.  
-src/Service/CatalogService.php — фильтрация и вычисление средней цены.  
-public/index.php — обработка GET и HTML-представление.  
-dataset/ — исходные данные.  
-tests/ — проверки.
+- `src/Model/Product.php` — модель товара.
+- `src/Model/Category.php` — модель категории.
+- `src/Service/CatalogService.php` — чтение dataset, создание объектов, фильтрация и средняя цена.
+- `public/index.php` — обработка GET и HTML-представление.
+- `dataset/` — исходные JSON и CSV.
+- `tests/` — проверки.
+
+Схема данных: **Product → CatalogService → index.php**. Product хранит сведения о товаре и методы его поведения; CatalogService создаёт и обрабатывает объекты; index.php получает результаты сервиса и выводит HTML.
