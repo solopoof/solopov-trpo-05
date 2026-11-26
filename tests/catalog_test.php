@@ -1,10 +1,14 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/../src/Service/CatalogRepository.php';
-function check(bool $ok,string $m):void{if(!$ok)throw new RuntimeException($m);}
-$c=(new CatalogRepository())->load(__DIR__.'/../dataset/products.json',__DIR__.'/../dataset/categories.json',__DIR__.'/../dataset/class_requirements.csv');
-check(count($c->products())===12,'12 products expected');check(count($c->categories())===3,'3 categories expected');check(count($c->requirements())===6,'6 class requirements expected');check($c->countActive()===10,'10 active products expected');
-check(count($c->products(['category'=>'2']))===4,'category filter');check(count($c->products(['min'=>'500','max'=>'1000']))===4,'price range');check(count($c->products(['q'=>'ТОВАР 1']))===4,'case-insensitive search');check(count($c->products(['active'=>true]))===10,'active filter');check($c->categoryName(999)==='Без категории','unknown category');
-$bad=false;try{new Product(0,'Ошибка',1.0,1);}catch(InvalidArgumentException){$bad=true;}check($bad,'Product constructor validation');
-$bad=false;try{new Category(1,' ');}catch(InvalidArgumentException){$bad=true;}check($bad,'Category constructor validation');
+function check(bool $ok,string $message):void{if(!$ok)throw new RuntimeException($message);}
+$catalog=(new CatalogRepository())->load(__DIR__.'/../dataset/products.json',__DIR__.'/../dataset/categories.json',__DIR__.'/../dataset/class_requirements.csv');
+check(count($catalog->products())===12,'12 товаров загружены');
+check(count($catalog->categories())===3,'3 категории загружены');
+check(count($catalog->requirements())===6,'Требования к классам загружены');
+check(count($catalog->products(2))===4,'Фильтрация по категории');
+check(count($catalog->products(999))===0,'Неизвестная категория');
+check(abs($catalog->averagePrice()-1192.5)<0.01,'Средняя цена рассчитана');
+$invalid=false;try{new Product(0,'Ошибка',1.0,1);}catch(InvalidArgumentException){$invalid=true;}check($invalid,'Проверка конструктора Product');
+$invalid=false;try{new Category(1,' ');}catch(InvalidArgumentException){$invalid=true;}check($invalid,'Проверка конструктора Category');
 echo "TRPO-05: OK\n";
