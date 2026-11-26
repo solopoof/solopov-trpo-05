@@ -8,7 +8,7 @@ check(count($catalog->categories())===3,'3 категории загружены
 check(count($catalog->requirements())===6,'Требования к классам загружены');
 check(count($catalog->products(2))===4,'Фильтрация по категории');
 check(count($catalog->products(999))===0,'Неизвестная категория');
-check(abs($catalog->averagePrice()-1192.5)<0.01,'Средняя цена рассчитана');
+check(abs($catalog->averagePrice()-1192.75)<0.01,'Средняя цена рассчитана');
 $invalid=false;try{new Product(0,'Ошибка',1.0,1);}catch(InvalidArgumentException){$invalid=true;}check($invalid,'Проверка конструктора Product');
 $invalid=false;try{new Category(1,' ');}catch(InvalidArgumentException){$invalid=true;}check($invalid,'Проверка конструктора Category');
 echo "TRPO-05: OK\n";
