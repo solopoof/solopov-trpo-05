@@ -23,4 +23,4 @@ products.json + categories.json + class_requirements.csv → CatalogRepository �
 
 src/Model — модели; src/Service/CatalogRepository.php — чтение файлов; src/Service/CatalogService.php — фильтрация и агрегаты; public/index.php — HTTP и HTML; dataset — исходные данные; tests — проверки.
 
-require_once предотвращает повторное подключение. При росте проекта ручное подключение классов обычно заменяют автозагрузчиком Composer по PSR-4.
+require_once подключает необходимые файлы классов и предотвращает их повторное подключение. При увеличении числа классов список ручных подключений становится сложнее поддерживать.
