@@ -10,6 +10,6 @@ final class CatalogRepository {
  }
  public function loadRequirements(string $file):array{
   if(!is_file($file)||!is_readable($file))throw new RuntimeException('Не найден class_requirements.csv.');$h=fopen($file,'rb');if(!$h)throw new RuntimeException('Не удалось открыть class_requirements.csv.');
-  try{$head=fgetcsv($h,null,';');if(!is_array($head))return [];$head[0]=preg_replace('/^\xEF\xBB\xBF/','',(string)$head[0]);$out=[];while(($r=fgetcsv($h,null,';'))!==false){if(count($r)===count($head))$out[]=array_combine($head,$r);}return $out;}finally{fclose($h);}
+  try{$head=fgetcsv($h,null,';','"','');if(!is_array($head))return [];$head[0]=preg_replace('/^\xEF\xBB\xBF/','',(string)$head[0]);$out=[];while(($r=fgetcsv($h,null,';','"',''))!==false){if(count($r)===count($head))$out[]=array_combine($head,$r);}return $out;}finally{fclose($h);}
  }
 }
